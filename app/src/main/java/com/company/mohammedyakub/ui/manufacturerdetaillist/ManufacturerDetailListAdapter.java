@@ -1,5 +1,6 @@
 package com.company.mohammedyakub.ui.manufacturerdetaillist;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import com.company.mohammedyakub.R;
 import com.company.mohammedyakub.data.model.Manufacturer;
 import com.company.mohammedyakub.data.model.ManufacturerItems;
 import com.company.mohammedyakub.databinding.CardManufacturerDetailItemBinding;
+import com.company.mohammedyakub.ui.builddates.BuiltDatesListActivity;
 
 
 import java.util.ArrayList;
@@ -38,9 +40,11 @@ public class ManufacturerDetailListAdapter extends RecyclerView.Adapter<Manufact
         viewHolder.binding.getRoot().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String mCode = manufacturerItems.get(position).getManufacturerCode();
-                String code = manufacturerItems.get(position).getCode();
-
+                String manufacturerCode = manufacturerItems.get(position).getManufacturerCode();
+                String typeCode = manufacturerItems.get(position).getCode();
+                Intent intent = BuiltDatesListActivity.getStartIntent(v.getContext(),
+                        manufacturerCode, typeCode);
+                v.getContext().startActivity(intent);
 
             }
         });

@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">SampleApp</string>
     <string name="label_no_connection">please check your internet connection</string>
+    <string name="manufacturer_list">All Manufacturers</string>
+    <string name="main_types">Types</string>
+    <string name="built_dates">Built Dates</string>
 </resources>

@@ -3,6 +3,7 @@ package com.company.mohammedyakub.data.remote;
 import com.company.mohammedyakub.data.remote.api.ManufacturerListResponce;
 import com.company.mohammedyakub.utils.AppConstants;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -22,4 +23,9 @@ public interface ApiService {
             @Query(AppConstants.Api.PAGE)Integer page,
             @Query(AppConstants.Api.PAGE_SIZE)Integer pageSize);
 
+    @GET("v1/car-types/built-dates")
+    Observable<ManufacturerListResponce> fetchManufacturerItemsBuiltDates(
+            @Query(AppConstants.Api.MANUFECTURERE)String manufacturerCode,
+            @Query(AppConstants.Api.MAIN_TYPE)String typeCode,
+            @Query(AppConstants.Api.KEY_API)String apiKey);
 }

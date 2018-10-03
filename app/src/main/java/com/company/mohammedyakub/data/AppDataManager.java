@@ -1,6 +1,7 @@
 package com.company.mohammedyakub.data;
 
 import com.company.mohammedyakub.data.local.db.DbHelper;
+import com.company.mohammedyakub.data.model.BuiltDate;
 import com.company.mohammedyakub.data.model.Manufacturer;
 import com.company.mohammedyakub.data.model.ManufacturerItems;
 import com.company.mohammedyakub.data.remote.ApiService;
@@ -58,6 +59,11 @@ public class AppDataManager implements DataManager {
                 api_key, page, pageSize);
     }
 
+    @Override
+    public Observable<ManufacturerListResponce> fetchManufacturerItemsBuiltDates(
+            String manufacturerCode, String typeCode, String apiKey) {
+        return mApiService.fetchManufacturerItemsBuiltDates(manufacturerCode, typeCode, apiKey);
+    }
 
     /******************************   DATABASE METHODS  *************************************/
 
@@ -93,6 +99,16 @@ public class AppDataManager implements DataManager {
     @Override
     public Observable<List<ManufacturerItems>> loadAllManufacturerItems(String code) {
         return mDbHelper.loadAllManufacturerItems(code);
+    }
+
+    @Override
+    public Observable<Boolean> saveManufacturerItemsBuiltDates(List<BuiltDate> builtDates){
+        return mDbHelper.saveManufacturerItemsBuiltDates(builtDates);
+    }
+
+    @Override
+    public Observable<List<BuiltDate>> loadAllManufacturerItemsBuiltDates(String manufacturerCode, String typeCode){
+        return mDbHelper.loadAllManufacturerItemsBuiltDates(manufacturerCode,typeCode);
     }
 
 
