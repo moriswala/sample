@@ -1,0 +1,21 @@
+Request:
+http://api-aws-eu-qa-1.auto1-test.com/v1/car-types/manufacturer?page=0&pageSize=10&wa_key=coding-puzzle-client-449cc9d
+
+Resp:
+{
+  "page" : 0,
+  "pageSize" : 10,
+  "totalPageCount" : 8,
+  "wkda" : {
+    "020" : "Abarth",
+    "040" : "Alfa Romeo",
+    "042" : "Alpina",
+    "043" : "Alpine",
+    "057" : "Aston Martin",
+    "060" : "Audi",
+    "130" : "BMW",
+    "095" : "Barkas",
+    "107" : "Bentley",
+    "145" : "Brilliance"
+  }
+}

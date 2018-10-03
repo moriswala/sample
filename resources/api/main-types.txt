@@ -1,0 +1,17 @@
+Request:
+http://api-aws-eu-qa-1.auto1-test.com/v1/car-types/main-types?manufacturer=107&page=0&pageSize=10&wa_key=coding-puzzle-client-449cc9d
+
+Resp:
+{
+  "page" : 0,
+  "pageSize" : 10,
+  "totalPageCount" : 1,
+  "wkda" : {
+    "Arnage" : "Arnage",
+    "Azure" : "Azure",
+    "Continental Flying Spur" : "Continental Flying Spur",
+    "Continental GT" : "Continental GT",
+    "Continental GTC" : "Continental GTC",
+    "Continental SC" : "Continental SC"
+  }
+}

@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">SampleApp</string>
+    <string name="label_no_connection">please check your internet connection</string>
+</resources>

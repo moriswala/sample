@@ -1,0 +1,135 @@
+package com.company.mohammedyakub.ui.manufacturerdetaillist;
+
+import android.app.Application;
+import android.arch.lifecycle.MutableLiveData;
+import android.util.Log;
+
+import com.company.mohammedyakub.data.DataManager;
+import com.company.mohammedyakub.data.model.Manufacturer;
+import com.company.mohammedyakub.data.model.ManufacturerItems;
+import com.company.mohammedyakub.ui.Base.BaseViewModel;
+import com.company.mohammedyakub.utils.AppConstants;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import javax.inject.Inject;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+
+public class ManufacturerDetailViewModel extends BaseViewModel {
+
+    private static final String TAG = ManufacturerDetailViewModel.class.getSimpleName();
+
+    MutableLiveData<List<ManufacturerItems>> manufacturerLiveData;
+
+    String mCode = "107";   //TODO need to make it dynamic
+
+    @Inject
+    public ManufacturerDetailViewModel(Application context, DataManager dataManager) {
+        super(context, dataManager);
+    }
+
+    /**
+     * fetch manufacturers from server OR local database based on network.
+     *
+     * if internet available then load manufacturers from server and update database
+     * else fetch manufacturers from database
+     */
+    void fetchManufacturerList(){
+        if(isNetworkConnected()){
+            fetchManufacturerItemsFromServer();
+        }else{
+            fetchManufacturerItemsFromDB();
+        }
+    }
+
+
+    /**
+     * fetch manufacturers from local database
+     *
+     */
+    private void fetchManufacturerItemsFromDB(){
+        getCompositeDisposable().add(getDataManager().loadAllManufacturerItems()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(moviesList->{
+                    // notify subscribers about the loaded data
+                    manufacturerLiveData.setValue(moviesList);
+                } , throwable -> {
+                    // notify subscribers about the error msg
+                    getErrorMsg().setValue(throwable.getMessage());
+                }));
+    }
+
+
+
+    /**
+     * fetch manufacturers from remote server
+     *
+     */
+    private void fetchManufacturerItemsFromServer(){
+        // show loading
+        showLoading.call();
+
+        Disposable s = getDataManager().fetchManufacturerItemListOfManufacturerCode(mCode, AppConstants.API_KEY,  0, 10)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(response -> {
+                    // hide loading dialog
+                    hideLoading.call();
+
+                    List<ManufacturerItems> list = mapToList(response.getWkda());
+                    // update manufacturers in db
+                    insertManufacturers(list);
+
+                    // notify subscribers about the new loaded data
+                    manufacturerLiveData.setValue(list);
+
+                }, throwable -> {
+                    // hide loading dialog
+                    hideLoading.call();
+
+                    // notify subscribers about the error msg
+                    getErrorMsg().setValue(throwable.getMessage());
+                });
+        getCompositeDisposable().add(s);
+    }
+
+    private List<ManufacturerItems> mapToList(Map<String, String> map){
+        List manuList = new ArrayList<ManufacturerItems>();
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            String code = entry.getKey();
+            String name = entry.getValue();
+            manuList.add(new ManufacturerItems(mCode,code, name));
+        }
+        return manuList;
+    }
+
+    /**
+     * insert manufacturers in database
+     *
+     * @param manufacturerItems
+     */
+    private void insertManufacturers(List<ManufacturerItems> manufacturerItems){
+        getCompositeDisposable().add(getDataManager().saveManufacturerItems(manufacturerItems)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(response->{
+                    Log.d(TAG , manufacturerItems.size()+" manufacturers inserted in db");
+                } , throwable -> {
+                    Log.d(TAG , "error inserting manufacturers : " +throwable.getMessage());
+                }));
+    }
+
+
+
+    public MutableLiveData<List<ManufacturerItems>> getManufacturerLiveData() {
+        if(manufacturerLiveData ==null)
+            manufacturerLiveData = new MutableLiveData<List<ManufacturerItems>>();
+        return manufacturerLiveData;
+    }
+}
