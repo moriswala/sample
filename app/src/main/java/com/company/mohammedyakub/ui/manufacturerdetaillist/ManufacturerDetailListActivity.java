@@ -22,7 +22,8 @@ import butterknife.ButterKnife;
 public class ManufacturerDetailListActivity extends BaseActivity<ManufacturerDetailViewModel>{
 
     public static final String KEY_CODE = "code";
-    
+    private static final String KEY_NAME = "name";
+
     @BindView(R.id.activity_main_rv) RecyclerView movies_recycler_view;
 
     @Inject
@@ -36,9 +37,10 @@ public class ManufacturerDetailListActivity extends BaseActivity<ManufacturerDet
         return manufacturerDetailViewModel;
     }
 
-    public static Intent getStartIntent(Context context, String mCode){
+    public static Intent getStartIntent(Context context, String mCode, String name){
         Intent intent = new Intent(context, ManufacturerDetailListActivity.class);
         intent.putExtra(KEY_CODE, mCode);
+        intent.putExtra(KEY_NAME, name);
         return intent;
     }
 
@@ -50,12 +52,14 @@ public class ManufacturerDetailListActivity extends BaseActivity<ManufacturerDet
 
         // initialize manufacturers recycler view
         setupManufacturersRecyclerView();
-        if(getIntent().hasExtra(KEY_CODE) && !TextUtils.isEmpty(getIntent().getStringExtra(KEY_CODE)))
+        if(getIntent().hasExtra(KEY_CODE) && !TextUtils.isEmpty(getIntent().getStringExtra(KEY_CODE))
+                && getIntent().hasExtra(KEY_NAME) && !TextUtils.isEmpty(getIntent().getStringExtra(KEY_NAME)))
         {
             String code = (String)getIntent().getStringExtra(KEY_CODE);
+            String name = (String)getIntent().getStringExtra(KEY_NAME);
             // start fetching manufacturers based on sort type
-            manufacturerDetailViewModel.fetchManufacturerList(getIntent().getStringExtra(KEY_CODE));
-
+            manufacturerDetailViewModel.fetchManufacturerList(code);
+            setTitle(name);
             // subscribe to manufacturers live data changes
             manufacturerDetailViewModel.getManufacturerLiveData().observe(this, manufacturerItems -> {
                 if (manufacturerItems != null)

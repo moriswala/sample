@@ -42,8 +42,9 @@ public class ManufacturerDetailListAdapter extends RecyclerView.Adapter<Manufact
             public void onClick(View v) {
                 String manufacturerCode = manufacturerItems.get(position).getManufacturerCode();
                 String typeCode = manufacturerItems.get(position).getCode();
+                String typeName = manufacturerItems.get(position).getName();
                 Intent intent = BuiltDatesListActivity.getStartIntent(v.getContext(),
-                        manufacturerCode, typeCode);
+                        manufacturerCode, typeCode, typeName);
                 v.getContext().startActivity(intent);
 
             }

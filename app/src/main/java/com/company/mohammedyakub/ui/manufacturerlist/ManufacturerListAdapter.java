@@ -41,7 +41,9 @@ public class ManufacturerListAdapter extends RecyclerView.Adapter<ManufacturerLi
             @Override
             public void onClick(View v) {
                 String mCode = manufacturers.get(position).getCode();
-                Intent intent = ManufacturerDetailListActivity.getStartIntent(v.getContext(), mCode);
+                String name = manufacturers.get(position).getName();
+                Intent intent = ManufacturerDetailListActivity.getStartIntent(v.getContext(),
+                        mCode, name);
                 v.getContext().startActivity(intent);
 
             }

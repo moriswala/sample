@@ -22,6 +22,7 @@ public class BuiltDatesListActivity extends BaseActivity<BuiltDatesViewModel>{
 
     public static final String KEY_CODE = "code";
     private static final String KEY_TYPE = "main-type";
+    private static final String KEY_NAME = "name";
 
     @BindView(R.id.activity_main_rv) RecyclerView movies_recycler_view;
 
@@ -36,10 +37,12 @@ public class BuiltDatesListActivity extends BaseActivity<BuiltDatesViewModel>{
         return builtDatesViewModel;
     }
 
-    public static Intent getStartIntent(Context context, String manufacturerCode, String typeCode){
+    public static Intent getStartIntent(Context context, String manufacturerCode, String typeCode,
+                                        String typeName){
         Intent intent = new Intent(context, BuiltDatesListActivity.class);
         intent.putExtra(KEY_CODE, manufacturerCode);
         intent.putExtra(KEY_TYPE, typeCode);
+        intent.putExtra(KEY_NAME, typeName);
         return intent;
     }
 
@@ -52,10 +55,13 @@ public class BuiltDatesListActivity extends BaseActivity<BuiltDatesViewModel>{
         // initialize manufacturers recycler view
         setupManufacturersRecyclerView();
         if(getIntent().hasExtra(KEY_CODE) && !TextUtils.isEmpty(getIntent().getStringExtra(KEY_CODE))
-                && getIntent().hasExtra(KEY_TYPE) && !TextUtils.isEmpty(getIntent().getStringExtra(KEY_TYPE)))
+                && getIntent().hasExtra(KEY_TYPE) && !TextUtils.isEmpty(getIntent().getStringExtra(KEY_TYPE))
+                && getIntent().hasExtra(KEY_NAME) && !TextUtils.isEmpty(getIntent().getStringExtra(KEY_NAME)))
         {
             String code = (String)getIntent().getStringExtra(KEY_CODE);
             String typeCode = (String)getIntent().getStringExtra(KEY_TYPE);
+            String typeName = (String)getIntent().getStringExtra(KEY_NAME);
+            setTitle(typeName);
             // start fetching manufacturers based on sort type
             builtDatesViewModel.fetchBuilDatesList(code,
                     typeCode);
