@@ -14,6 +14,6 @@ public interface ManufacturerItemsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<ManufacturerItems> manufacturerItems);
 
-    @Query("SELECT * FROM manufacturer_items")
-    List<ManufacturerItems> loadAll();
+    @Query("SELECT * FROM manufacturer_items WHERE manufacturerCode =:code")
+    List<ManufacturerItems> loadAllWithManufacturerCode(String code);
 }

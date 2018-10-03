@@ -62,7 +62,7 @@ public class AppDbHelper implements DbHelper{
     }
 
     @Override
-    public Observable<List<ManufacturerItems>> loadAllManufacturerItems() {
-        return Observable.fromCallable(() -> mAppDatabase.manufacturerItemDao().loadAll());
+    public Observable<List<ManufacturerItems>> loadAllManufacturerItems(String code) {
+        return Observable.fromCallable(() -> mAppDatabase.manufacturerItemDao().loadAllWithManufacturerCode(code));
     }
 }

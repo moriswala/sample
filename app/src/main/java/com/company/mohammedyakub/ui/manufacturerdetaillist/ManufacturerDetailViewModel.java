@@ -26,8 +26,6 @@ public class ManufacturerDetailViewModel extends BaseViewModel {
 
     MutableLiveData<List<ManufacturerItems>> manufacturerLiveData;
 
-    String mCode = "107";   //TODO need to make it dynamic
-
     @Inject
     public ManufacturerDetailViewModel(Application context, DataManager dataManager) {
         super(context, dataManager);
@@ -38,12 +36,13 @@ public class ManufacturerDetailViewModel extends BaseViewModel {
      *
      * if internet available then load manufacturers from server and update database
      * else fetch manufacturers from database
+     * @param code
      */
-    void fetchManufacturerList(){
+    void fetchManufacturerList(String code){
         if(isNetworkConnected()){
-            fetchManufacturerItemsFromServer();
+            fetchManufacturerItemsFromServer(code);
         }else{
-            fetchManufacturerItemsFromDB();
+            fetchManufacturerItemsFromDB(code);
         }
     }
 
@@ -51,9 +50,10 @@ public class ManufacturerDetailViewModel extends BaseViewModel {
     /**
      * fetch manufacturers from local database
      *
+     * @param code
      */
-    private void fetchManufacturerItemsFromDB(){
-        getCompositeDisposable().add(getDataManager().loadAllManufacturerItems()
+    private void fetchManufacturerItemsFromDB(String code){
+        getCompositeDisposable().add(getDataManager().loadAllManufacturerItems(code)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(moviesList->{
@@ -70,19 +70,20 @@ public class ManufacturerDetailViewModel extends BaseViewModel {
     /**
      * fetch manufacturers from remote server
      *
+     * @param code
      */
-    private void fetchManufacturerItemsFromServer(){
+    private void fetchManufacturerItemsFromServer(String code){
         // show loading
         showLoading.call();
 
-        Disposable s = getDataManager().fetchManufacturerItemListOfManufacturerCode(mCode, AppConstants.API_KEY,  0, 10)
+        Disposable s = getDataManager().fetchManufacturerItemListOfManufacturerCode(code, AppConstants.API_KEY,  0, 10)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
                     // hide loading dialog
                     hideLoading.call();
 
-                    List<ManufacturerItems> list = mapToList(response.getWkda());
+                    List<ManufacturerItems> list = mapToList(code, response.getWkda());
                     // update manufacturers in db
                     insertManufacturers(list);
 
@@ -99,12 +100,12 @@ public class ManufacturerDetailViewModel extends BaseViewModel {
         getCompositeDisposable().add(s);
     }
 
-    private List<ManufacturerItems> mapToList(Map<String, String> map){
+    private List<ManufacturerItems> mapToList(String manufacturerCode, Map<String, String> map){
         List manuList = new ArrayList<ManufacturerItems>();
         for (Map.Entry<String, String> entry : map.entrySet()) {
             String code = entry.getKey();
             String name = entry.getValue();
-            manuList.add(new ManufacturerItems(mCode,code, name));
+            manuList.add(new ManufacturerItems(manufacturerCode, code, name));
         }
         return manuList;
     }

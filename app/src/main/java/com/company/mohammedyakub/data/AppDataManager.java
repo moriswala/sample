@@ -6,16 +6,13 @@ import com.company.mohammedyakub.data.model.ManufacturerItems;
 import com.company.mohammedyakub.data.remote.ApiService;
 import com.company.mohammedyakub.data.remote.api.ManufacturerListResponce;
 import com.company.mohammedyakub.data.local.prefs.SharedPreferenceUtils;
-import com.company.mohammedyakub.utils.AppConstants;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Observable;
-import retrofit2.http.Query;
 
 /**
  *
@@ -94,8 +91,8 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Observable<List<ManufacturerItems>> loadAllManufacturerItems() {
-        return mDbHelper.loadAllManufacturerItems();
+    public Observable<List<ManufacturerItems>> loadAllManufacturerItems(String code) {
+        return mDbHelper.loadAllManufacturerItems(code);
     }
 
 

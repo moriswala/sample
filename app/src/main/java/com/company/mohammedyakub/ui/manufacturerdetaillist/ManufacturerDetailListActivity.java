@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 
 import com.company.mohammedyakub.R;
 import com.company.mohammedyakub.data.model.Manufacturer;
@@ -49,15 +50,20 @@ public class ManufacturerDetailListActivity extends BaseActivity<ManufacturerDet
 
         // initialize manufacturers recycler view
         setupManufacturersRecyclerView();
+        if(getIntent().hasExtra(KEY_CODE) && !TextUtils.isEmpty(getIntent().getStringExtra(KEY_CODE)))
+        {
+            String code = (String)getIntent().getStringExtra(KEY_CODE);
+            // start fetching manufacturers based on sort type
+            manufacturerDetailViewModel.fetchManufacturerList(getIntent().getStringExtra(KEY_CODE));
 
-        // start fetching manufacturers based on sort type
-        manufacturerDetailViewModel.fetchManufacturerList();
-
-        // subscribe to manufacturers live data changes
-        manufacturerDetailViewModel.getManufacturerLiveData().observe(this, manufacturerItems -> {
-            if(manufacturerItems!=null)
-               manufacturerDetailListAdapter.addItems(new ArrayList<>(manufacturerItems));
-        });
+            // subscribe to manufacturers live data changes
+            manufacturerDetailViewModel.getManufacturerLiveData().observe(this, manufacturerItems -> {
+                if (manufacturerItems != null)
+                    manufacturerDetailListAdapter.addItems(new ArrayList<>(manufacturerItems));
+            });
+        }
+        else
+            finish();
     }
 
     
