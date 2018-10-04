@@ -1,5 +1,6 @@
 package com.company.mohammedyakub.ui.manufacturerlist;
 
+import android.app.Activity;
 import android.app.Application;
 
 import com.company.mohammedyakub.data.DataManager;
@@ -20,6 +21,6 @@ public class ManufacturerListModule {
 
     @Provides
     ManufacturerListAdapter provideManufacturerListAdapter(){
-        return new ManufacturerListAdapter(new ArrayList<>());
+        return new ManufacturerListAdapter();
     }
 }

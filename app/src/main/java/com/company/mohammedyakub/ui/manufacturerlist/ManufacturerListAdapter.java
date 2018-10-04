@@ -1,7 +1,13 @@
 package com.company.mohammedyakub.ui.manufacturerlist;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
+import android.arch.paging.PagedListAdapter;
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,13 +22,16 @@ import com.company.mohammedyakub.utils.AppConstants;
 
 import java.util.ArrayList;
 
-public class ManufacturerListAdapter extends RecyclerView.Adapter<ManufacturerListAdapter.ViewHolder> {
+import javax.inject.Inject;
 
+public class ManufacturerListAdapter extends PagedListAdapter<Manufacturer, ManufacturerListAdapter.ViewHolder> {
+
+    private ManufacturerListActivity activity;
     LayoutInflater layoutInflater;
-    public ArrayList<Manufacturer> manufacturers;
 
-    public ManufacturerListAdapter(ArrayList<Manufacturer> manufacturers) {
-        this.manufacturers = manufacturers;
+
+    public ManufacturerListAdapter() {
+        super(DIFF_CALLBACK);
     }
 
     @Override
@@ -36,22 +45,37 @@ public class ManufacturerListAdapter extends RecyclerView.Adapter<ManufacturerLi
 
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, final int position) {
-        viewHolder.binding.setManufacturer(manufacturers.get(position));
+        Manufacturer manufacturer = getItem(position);
+        viewHolder.binding.setManufacturer(manufacturer);
+        viewHolder.binding.setPosition(position);
         viewHolder.binding.getRoot().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String mCode = manufacturers.get(position).getCode();
-                Intent intent = ManufacturerDetailListActivity.getStartIntent(v.getContext(), mCode);
-                v.getContext().startActivity(intent);
+                String mCode = manufacturer.getCode();
+                String name = manufacturer.getName();
+                Intent intent = ManufacturerDetailListActivity.getStartIntent(v.getContext(),
+                        mCode, name);
+                ActivityOptions options = null;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                    options = ActivityOptions.makeSceneTransitionAnimation((ManufacturerListActivity)
+                            v.getContext());
+                    v.getContext().startActivity(intent, options.toBundle());
+
+                } else {
+                    // Swap without transition
+                    v.getContext().startActivity(intent);
+                }
+
+
 
             }
         });
     }
 
-    @Override
-    public int getItemCount() {
-        return manufacturers.size();
-    }
+//    @Override
+//    public int getItemCount() {
+//        return manufacturers.size();
+//    }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
@@ -63,10 +87,23 @@ public class ManufacturerListAdapter extends RecyclerView.Adapter<ManufacturerLi
         }
 
     }
+//
+//    public void addItems(ArrayList<Manufacturer> manufacturers){
+//        this.manufacturers.clear();
+//        this.manufacturers.addAll(manufacturers);
+//        notifyDataSetChanged();
+//    }
 
-    public void addItems(ArrayList<Manufacturer> manufacturers){
-        this.manufacturers.clear();
-        this.manufacturers.addAll(manufacturers);
-        notifyDataSetChanged();
-    }
+    private static DiffUtil.ItemCallback<Manufacturer> DIFF_CALLBACK =
+            new DiffUtil.ItemCallback<Manufacturer>() {
+                @Override
+                public boolean areItemsTheSame(Manufacturer oldItem, Manufacturer newItem) {
+                    return oldItem.getCode() == newItem.getCode();
+                }
+
+                @Override
+                public boolean areContentsTheSame(Manufacturer oldItem, Manufacturer newItem) {
+                    return oldItem.equals(newItem);
+                }
+            };
 }

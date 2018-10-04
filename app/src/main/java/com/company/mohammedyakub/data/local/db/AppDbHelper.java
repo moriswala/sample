@@ -2,6 +2,7 @@ package com.company.mohammedyakub.data.local.db;
 
 import android.util.Log;
 
+import com.company.mohammedyakub.data.model.BuiltDate;
 import com.company.mohammedyakub.data.model.Manufacturer;
 import com.company.mohammedyakub.data.model.ManufacturerItems;
 
@@ -62,7 +63,28 @@ public class AppDbHelper implements DbHelper{
     }
 
     @Override
-    public Observable<List<ManufacturerItems>> loadAllManufacturerItems() {
-        return Observable.fromCallable(() -> mAppDatabase.manufacturerItemDao().loadAll());
+    public Observable<List<ManufacturerItems>> loadAllManufacturerItems(String code) {
+        return Observable.fromCallable(() -> mAppDatabase.manufacturerItemDao()
+                .loadAllWithManufacturerCode(code));
+    }
+
+    @Override
+    public Observable<Boolean> saveManufacturerItemsBuiltDates(List<BuiltDate> builtDates) {
+        return Observable.fromCallable(() -> {
+            try{
+                mAppDatabase.builtDatesDao().insertAll(builtDates);
+                return true;
+            }catch (Exception e){
+                Log.d(TAG , e.getMessage());
+            }
+            return false;
+        });
+    }
+
+    @Override
+    public Observable<List<BuiltDate>> loadAllManufacturerItemsBuiltDates(String manufacturerCode,
+                                                                          String typeCode) {
+        return Observable.fromCallable(() -> mAppDatabase.builtDatesDao()
+                .loadAllHavingManufacturerCodeAndTypeCode(manufacturerCode, typeCode));
     }
 }

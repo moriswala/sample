@@ -1,12 +1,11 @@
-package com.company.mohammedyakub.ui.manufacturerdetaillist;
+package com.company.mohammedyakub.ui.builddates;
 
 import android.app.Application;
 import android.arch.lifecycle.MutableLiveData;
 import android.util.Log;
 
 import com.company.mohammedyakub.data.DataManager;
-import com.company.mohammedyakub.data.model.Manufacturer;
-import com.company.mohammedyakub.data.model.ManufacturerItems;
+import com.company.mohammedyakub.data.model.BuiltDate;
 import com.company.mohammedyakub.ui.Base.BaseViewModel;
 import com.company.mohammedyakub.utils.AppConstants;
 
@@ -20,29 +19,30 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class ManufacturerDetailViewModel extends BaseViewModel {
+public class BuiltDatesViewModel extends BaseViewModel {
 
-    private static final String TAG = ManufacturerDetailViewModel.class.getSimpleName();
+    private static final String TAG = BuiltDatesViewModel.class.getSimpleName();
 
-    MutableLiveData<List<ManufacturerItems>> manufacturerDetailLiveData;
+    MutableLiveData<List<BuiltDate>> builtDatesLiveData;
 
     @Inject
-    public ManufacturerDetailViewModel(Application context, DataManager dataManager) {
+    public BuiltDatesViewModel(Application context, DataManager dataManager) {
         super(context, dataManager);
     }
 
     /**
      * fetch manufacturers from server OR local database based on network.
      *
-     * if internet available then load manufacturers from server and update database
-     * else fetch manufacturers from database
-     * @param code
+     *       if internet available then load manufacturers from server and update database
+     *       else fetch manufacturers from database
+     * @param manufacturerCode
+     * @param typeCode
      */
-    void fetchManufacturerList(String code){
+    void fetchBuilDatesList(String manufacturerCode, String typeCode){
         if(isNetworkConnected()){
-            fetchManufacturerItemsFromServer(code);
+            fetchManufacturerItemsBuiltDatesFromServer(manufacturerCode, typeCode);
         }else{
-            fetchManufacturerItemsFromDB(code);
+            fetchManufacturerItemsBuiltDatesFromDB(manufacturerCode, typeCode);
         }
     }
 
@@ -50,15 +50,16 @@ public class ManufacturerDetailViewModel extends BaseViewModel {
     /**
      * fetch manufacturers from local database
      *
-     * @param code
+     * @param manufacturerCode
+     * @param typeCode
      */
-    private void fetchManufacturerItemsFromDB(String code){
-        getCompositeDisposable().add(getDataManager().loadAllManufacturerItems(code)
+    private void fetchManufacturerItemsBuiltDatesFromDB(String manufacturerCode, String typeCode){
+        getCompositeDisposable().add(getDataManager().loadAllManufacturerItemsBuiltDates(manufacturerCode, typeCode)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(manufacturerItems->{
+                .subscribe(builtDates->{
                     // notify subscribers about the loaded data
-                    manufacturerDetailLiveData.setValue(manufacturerItems);
+                    builtDatesLiveData.setValue(builtDates);
                 } , throwable -> {
                     // notify subscribers about the error msg
                     getErrorMsg().setValue(throwable.getMessage());
@@ -66,42 +67,48 @@ public class ManufacturerDetailViewModel extends BaseViewModel {
     }
 
 
-
     /**
      * fetch manufacturers from remote server
      *
-     * @param code
+     * @param manufacturerCode
+     * @param typeCode
      */
-    private void fetchManufacturerItemsFromServer(String code){
+    private void fetchManufacturerItemsBuiltDatesFromServer(String manufacturerCode, String typeCode){
         // show loading
         showLoading.call();
-        Disposable s = getDataManager().fetchManufacturerItemListOfManufacturerCode(code,
-                AppConstants.API_KEY,  0, 10)
+
+        Disposable s = getDataManager().fetchManufacturerItemsBuiltDates(manufacturerCode,
+                typeCode,
+                AppConstants.API_KEY)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
                     // hide loading dialog
                     hideLoading.call();
-                    List<ManufacturerItems> list = mapToList(code, response.getWkda());
+
+                    List<BuiltDate> list = mapToList(manufacturerCode, typeCode, response.getWkda());
                     // update manufacturers in db
                     insertManufacturers(list);
+
                     // notify subscribers about the new loaded data
-                    manufacturerDetailLiveData.setValue(list);
+                    builtDatesLiveData.setValue(list);
+
                 }, throwable -> {
                     // hide loading dialog
                     hideLoading.call();
+
                     // notify subscribers about the error msg
                     getErrorMsg().setValue(throwable.getMessage());
                 });
         getCompositeDisposable().add(s);
     }
 
-    private List<ManufacturerItems> mapToList(String manufacturerCode, Map<String, String> map){
-        List manuList = new ArrayList<ManufacturerItems>();
+    private List<BuiltDate> mapToList(String manufacturerCode, String typeCode, Map<String, String> map){
+        List manuList = new ArrayList<BuiltDate>();
         for (Map.Entry<String, String> entry : map.entrySet()) {
             String code = entry.getKey();
             String name = entry.getValue();
-            manuList.add(new ManufacturerItems(manufacturerCode, code, name));
+            manuList.add(new BuiltDate(manufacturerCode, typeCode, code, name));
         }
         return manuList;
     }
@@ -109,14 +116,14 @@ public class ManufacturerDetailViewModel extends BaseViewModel {
     /**
      * insert manufacturers in database
      *
-     * @param manufacturerItems
+     * @param builtDates
      */
-    private void insertManufacturers(List<ManufacturerItems> manufacturerItems){
-        getCompositeDisposable().add(getDataManager().saveManufacturerItems(manufacturerItems)
+    private void insertManufacturers(List<BuiltDate> builtDates){
+        getCompositeDisposable().add(getDataManager().saveManufacturerItemsBuiltDates(builtDates)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response->{
-                    Log.d(TAG , manufacturerItems.size()+" manufacturers inserted in db");
+                    Log.d(TAG , builtDates.size()+" manufacturers inserted in db");
                 } , throwable -> {
                     Log.d(TAG , "error inserting manufacturers : " +throwable.getMessage());
                 }));
@@ -124,9 +131,9 @@ public class ManufacturerDetailViewModel extends BaseViewModel {
 
 
 
-    public MutableLiveData<List<ManufacturerItems>> getManufacturerLiveData() {
-        if(manufacturerDetailLiveData ==null)
-            manufacturerDetailLiveData = new MutableLiveData<List<ManufacturerItems>>();
-        return manufacturerDetailLiveData;
+    public MutableLiveData<List<BuiltDate>> getBuiltDatesLiveData() {
+        if(builtDatesLiveData ==null)
+            builtDatesLiveData = new MutableLiveData<List<BuiltDate>>();
+        return builtDatesLiveData;
     }
 }

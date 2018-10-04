@@ -22,7 +22,11 @@
         </activity>
         <activity android:name=".ui.manufacturerdetaillist.ManufacturerDetailListActivity"
             android:parentActivityName=".ui.manufacturerlist.ManufacturerListActivity"
+            android:label="@string/main_types"
             />
+        <activity android:name=".ui.builddates.BuiltDatesListActivity"
+            android:parentActivityName=".ui.manufacturerdetaillist.ManufacturerDetailListActivity"
+            android:label="@string/built_dates"/>
     </application>
 
 </manifest>

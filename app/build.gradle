@@ -4,7 +4,7 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.company.mohammedyakub"
-        minSdkVersion 17
+        minSdkVersion 16
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
@@ -46,6 +46,7 @@ dependencies {
 
     implementation "android.arch.lifecycle:extensions:1.1.1"
     implementation "android.arch.lifecycle:viewmodel:1.1.1"
+    implementation "android.arch.paging:runtime:1.0.0"
 
     // retrofit
     implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofit"

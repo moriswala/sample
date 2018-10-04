@@ -1,5 +1,7 @@
 package com.company.mohammedyakub.ui.manufacturerdetaillist;
 
+import android.app.ActivityOptions;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +12,8 @@ import com.company.mohammedyakub.R;
 import com.company.mohammedyakub.data.model.Manufacturer;
 import com.company.mohammedyakub.data.model.ManufacturerItems;
 import com.company.mohammedyakub.databinding.CardManufacturerDetailItemBinding;
+import com.company.mohammedyakub.ui.builddates.BuiltDatesListActivity;
+import com.company.mohammedyakub.ui.manufacturerlist.ManufacturerListActivity;
 
 
 import java.util.ArrayList;
@@ -35,12 +39,25 @@ public class ManufacturerDetailListAdapter extends RecyclerView.Adapter<Manufact
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, final int position) {
         viewHolder.binding.setManufacturerItem(manufacturerItems.get(position));
+        viewHolder.binding.setPosition(position);
         viewHolder.binding.getRoot().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String mCode = manufacturerItems.get(position).getManufacturerCode();
-                String code = manufacturerItems.get(position).getCode();
+                String manufacturerCode = manufacturerItems.get(position).getManufacturerCode();
+                String typeCode = manufacturerItems.get(position).getCode();
+                String typeName = manufacturerItems.get(position).getName();
+                Intent intent = BuiltDatesListActivity.getStartIntent(v.getContext(),
+                        manufacturerCode, typeCode, typeName);
+                ActivityOptions options = null;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                    options = ActivityOptions.makeSceneTransitionAnimation((ManufacturerDetailListActivity)
+                            v.getContext());
+                    v.getContext().startActivity(intent, options.toBundle());
 
+                } else {
+                    // Swap without transition
+                    v.getContext().startActivity(intent);
+                }
 
             }
         });

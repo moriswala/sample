@@ -2,15 +2,22 @@ package com.company.mohammedyakub.ui.Base;
 
 import android.app.ProgressDialog;
 import android.arch.lifecycle.Observer;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.util.Log;
+import android.widget.Toast;
+
+import com.company.mohammedyakub.R;
 import com.company.mohammedyakub.utils.CommonUtils;
 import dagger.android.AndroidInjection;
 
 
 public abstract class BaseActivity<V extends BaseViewModel> extends AppCompatActivity {
+    private static final String TAG = BaseActivity.class.getSimpleName();
     // this can probably depend on showLoading/hideLoading SingleEvent of BaseViewModel.
     // since its going to be common for all the activities
     private ProgressDialog mProgressDialog;
@@ -32,7 +39,10 @@ public abstract class BaseActivity<V extends BaseViewModel> extends AppCompatAct
         super.onCreate(savedInstanceState);
         this.mViewModel = mViewModel == null ? getViewModel() : mViewModel;
         subscribeToProgressDialogEvents();
+
     }
+
+
 
 
     /**
@@ -45,7 +55,8 @@ public abstract class BaseActivity<V extends BaseViewModel> extends AppCompatAct
         mViewModel.getShowLoading().observe(this, Void -> showLoading());
 
         mViewModel.getErrorMsg().observe(this, (Observer<String>) error -> {
-            Log.d("error msg : ",error);
+            Log.e(TAG, error );
+            Toast.makeText(this, getString(R.string.some_error), Toast.LENGTH_SHORT).show();
         });
     }
 

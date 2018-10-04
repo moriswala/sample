@@ -14,5 +14,8 @@ public class AppConstants {
         public final static String PAGE = "page";
         public final static String PAGE_SIZE = "pageSize";
         public static final String MANUFECTURERE = "manufacturer";
+        public static final String MAIN_TYPE = "main-type";
+
+
     }
 }

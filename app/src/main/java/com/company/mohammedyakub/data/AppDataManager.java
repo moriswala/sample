@@ -1,21 +1,20 @@
 package com.company.mohammedyakub.data;
 
 import com.company.mohammedyakub.data.local.db.DbHelper;
+import com.company.mohammedyakub.data.model.BuiltDate;
 import com.company.mohammedyakub.data.model.Manufacturer;
 import com.company.mohammedyakub.data.model.ManufacturerItems;
 import com.company.mohammedyakub.data.remote.ApiService;
-import com.company.mohammedyakub.data.remote.api.ManufacturerListResponce;
+import com.company.mohammedyakub.data.remote.api.ServerResponce;
 import com.company.mohammedyakub.data.local.prefs.SharedPreferenceUtils;
-import com.company.mohammedyakub.utils.AppConstants;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Observable;
-import retrofit2.http.Query;
+import retrofit2.Call;
 
 /**
  *
@@ -47,12 +46,17 @@ public class AppDataManager implements DataManager {
      * @return
      */
     @Override
-    public Observable<ManufacturerListResponce> fetchManufacturersList(String api_key, Integer page, Integer pageSize) {
+    public Observable<ServerResponce> fetchManufacturersList(String api_key, Integer page, Integer pageSize) {
         return mApiService.fetchManufacturersList(api_key , page, pageSize);
     }
 
     @Override
-    public Observable<ManufacturerListResponce> fetchManufacturerItemListOfManufacturerCode(
+    public Call<ServerResponce> fetchManufacturersListCall(String api_key, Integer page, Integer pageSize) {
+        return mApiService.fetchManufacturersListCall(api_key , page, pageSize);
+    }
+
+    @Override
+    public Observable<ServerResponce> fetchManufacturerItemListOfManufacturerCode(
             String manufacturer,
             String api_key,
             Integer page,
@@ -61,6 +65,11 @@ public class AppDataManager implements DataManager {
                 api_key, page, pageSize);
     }
 
+    @Override
+    public Observable<ServerResponce> fetchManufacturerItemsBuiltDates(
+            String manufacturerCode, String typeCode, String apiKey) {
+        return mApiService.fetchManufacturerItemsBuiltDates(manufacturerCode, typeCode, apiKey);
+    }
 
     /******************************   DATABASE METHODS  *************************************/
 
@@ -94,8 +103,18 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Observable<List<ManufacturerItems>> loadAllManufacturerItems() {
-        return mDbHelper.loadAllManufacturerItems();
+    public Observable<List<ManufacturerItems>> loadAllManufacturerItems(String code) {
+        return mDbHelper.loadAllManufacturerItems(code);
+    }
+
+    @Override
+    public Observable<Boolean> saveManufacturerItemsBuiltDates(List<BuiltDate> builtDates){
+        return mDbHelper.saveManufacturerItemsBuiltDates(builtDates);
+    }
+
+    @Override
+    public Observable<List<BuiltDate>> loadAllManufacturerItemsBuiltDates(String manufacturerCode, String typeCode){
+        return mDbHelper.loadAllManufacturerItemsBuiltDates(manufacturerCode,typeCode);
     }
 
 
