@@ -1,5 +1,6 @@
 package com.company.mohammedyakub.ui.manufacturerlist;
 
+import android.app.Activity;
 import android.app.Application;
 
 import com.company.mohammedyakub.data.DataManager;

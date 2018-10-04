@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.provider.Settings;
+import android.view.Gravity;
 import android.view.Window;
 import com.company.mohammedyakub.R;
 import java.util.regex.Matcher;
@@ -24,6 +25,7 @@ public class CommonUtils {
         progressDialog.show();
         if (progressDialog.getWindow() != null) {
             progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            progressDialog.getWindow().setGravity(Gravity.CENTER);
         }
         progressDialog.setIndeterminate(true);
         progressDialog.setCancelable(false);

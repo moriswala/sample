@@ -6,9 +6,9 @@
             type="com.company.mohammedyakub.data.model.BuiltDate" />
     </data>
 
-<android.support.v7.widget.CardView android:layout_margin="10dp"
+<android.support.v7.widget.CardView android:layout_margin="1dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    app:cardElevation="5dp"
+    app:cardElevation="1dp"
     android:layout_width="match_parent"
     android:layout_height="250dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">

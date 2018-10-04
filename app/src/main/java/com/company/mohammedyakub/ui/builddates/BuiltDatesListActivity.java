@@ -2,10 +2,13 @@ package com.company.mohammedyakub.ui.builddates;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.transition.Fade;
+import android.transition.Slide;
 
 import com.company.mohammedyakub.R;
 import com.company.mohammedyakub.ui.Base.BaseActivity;
@@ -51,7 +54,7 @@ public class BuiltDatesListActivity extends BaseActivity<BuiltDatesViewModel>{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
+        setupWindowAnimations();
         // initialize manufacturers recycler view
         setupManufacturersRecyclerView();
         if(getIntent().hasExtra(KEY_CODE) && !TextUtils.isEmpty(getIntent().getStringExtra(KEY_CODE))
@@ -76,7 +79,15 @@ public class BuiltDatesListActivity extends BaseActivity<BuiltDatesViewModel>{
             finish();
     }
 
-    
+    private void setupWindowAnimations() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Fade fade = new Fade();
+            fade.setDuration(1000);
+            getWindow().setEnterTransition(fade);
+
+        }
+    }
+
     private void setupManufacturersRecyclerView() {
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this,2);
         built_dates_recycler_view.setLayoutManager(mLayoutManager);

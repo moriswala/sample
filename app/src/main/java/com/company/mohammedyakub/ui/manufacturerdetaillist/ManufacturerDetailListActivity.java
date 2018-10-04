@@ -2,10 +2,15 @@ package com.company.mohammedyakub.ui.manufacturerdetaillist;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.transition.Fade;
+import android.transition.Slide;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 
 import com.company.mohammedyakub.R;
 import com.company.mohammedyakub.ui.Base.BaseActivity;
@@ -48,7 +53,8 @@ public class ManufacturerDetailListActivity extends BaseActivity<ManufacturerDet
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
+        setupWindowAnimations();
+        setupManufacturersRecyclerView();
         // initialize manufacturers recycler view
         setupManufacturersRecyclerView();
         if(getIntent().hasExtra(KEY_CODE) && !TextUtils.isEmpty(getIntent().getStringExtra(KEY_CODE))
@@ -69,6 +75,19 @@ public class ManufacturerDetailListActivity extends BaseActivity<ManufacturerDet
             finish();
     }
 
+    private void setupWindowAnimations() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Fade fade = new Fade();
+            fade.setDuration(1000);
+
+            Slide slide = new Slide();
+            slide.setDuration(1000);
+
+            getWindow().setEnterTransition(fade);
+            getWindow().setReenterTransition(slide);
+
+        }
+    }
     
     private void setupManufacturersRecyclerView() {
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this,2);
