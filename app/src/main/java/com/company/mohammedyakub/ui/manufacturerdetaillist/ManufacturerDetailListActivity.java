@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 
 import com.company.mohammedyakub.R;
-import com.company.mohammedyakub.data.model.Manufacturer;
 import com.company.mohammedyakub.ui.Base.BaseActivity;
 
 
@@ -24,7 +23,7 @@ public class ManufacturerDetailListActivity extends BaseActivity<ManufacturerDet
     public static final String KEY_CODE = "code";
     private static final String KEY_NAME = "name";
 
-    @BindView(R.id.activity_main_rv) RecyclerView movies_recycler_view;
+    @BindView(R.id.activity_main_rv) RecyclerView manufacturer_detail_recycler_view;
 
     @Inject
     ManufacturerDetailViewModel manufacturerDetailViewModel;
@@ -73,8 +72,8 @@ public class ManufacturerDetailListActivity extends BaseActivity<ManufacturerDet
     
     private void setupManufacturersRecyclerView() {
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this,2);
-        movies_recycler_view.setLayoutManager(mLayoutManager);
-        movies_recycler_view.setAdapter(manufacturerDetailListAdapter);
+        manufacturer_detail_recycler_view.setLayoutManager(mLayoutManager);
+        manufacturer_detail_recycler_view.setAdapter(manufacturerDetailListAdapter);
     }
 
 

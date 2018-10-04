@@ -23,7 +23,6 @@ public class ManufacturerDataSource extends PageKeyedDataSource<Integer, Manufac
 
     public static final int PAGE_SIZE = 10;
     private static final int FIRST_PAGE = 0;
-    private static final String SITE_NAME = "stackoverflow";
     private final DataManager dataManager;
 
     public ManufacturerDataSource(DataManager dataManager) {

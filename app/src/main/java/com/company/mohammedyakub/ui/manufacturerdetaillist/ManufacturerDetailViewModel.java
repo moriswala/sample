@@ -24,7 +24,7 @@ public class ManufacturerDetailViewModel extends BaseViewModel {
 
     private static final String TAG = ManufacturerDetailViewModel.class.getSimpleName();
 
-    MutableLiveData<List<ManufacturerItems>> manufacturerLiveData;
+    MutableLiveData<List<ManufacturerItems>> manufacturerDetailLiveData;
 
     @Inject
     public ManufacturerDetailViewModel(Application context, DataManager dataManager) {
@@ -56,9 +56,9 @@ public class ManufacturerDetailViewModel extends BaseViewModel {
         getCompositeDisposable().add(getDataManager().loadAllManufacturerItems(code)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(moviesList->{
+                .subscribe(manufacturerItems->{
                     // notify subscribers about the loaded data
-                    manufacturerLiveData.setValue(moviesList);
+                    manufacturerDetailLiveData.setValue(manufacturerItems);
                 } , throwable -> {
                     // notify subscribers about the error msg
                     getErrorMsg().setValue(throwable.getMessage());
@@ -86,7 +86,7 @@ public class ManufacturerDetailViewModel extends BaseViewModel {
                     // update manufacturers in db
                     insertManufacturers(list);
                     // notify subscribers about the new loaded data
-                    manufacturerLiveData.setValue(list);
+                    manufacturerDetailLiveData.setValue(list);
                 }, throwable -> {
                     // hide loading dialog
                     hideLoading.call();
@@ -125,8 +125,8 @@ public class ManufacturerDetailViewModel extends BaseViewModel {
 
 
     public MutableLiveData<List<ManufacturerItems>> getManufacturerLiveData() {
-        if(manufacturerLiveData ==null)
-            manufacturerLiveData = new MutableLiveData<List<ManufacturerItems>>();
-        return manufacturerLiveData;
+        if(manufacturerDetailLiveData ==null)
+            manufacturerDetailLiveData = new MutableLiveData<List<ManufacturerItems>>();
+        return manufacturerDetailLiveData;
     }
 }

@@ -12,7 +12,7 @@ import java.util.List;
 @Dao
 public interface ManufacturerDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertAll(List<Manufacturer> movies);
+    void insertAll(List<Manufacturer> manufacturers);
 
     @Query("SELECT * FROM manufacturer")
     List<Manufacturer> loadAll();

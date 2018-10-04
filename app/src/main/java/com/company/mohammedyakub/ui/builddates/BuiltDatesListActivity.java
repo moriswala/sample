@@ -24,7 +24,7 @@ public class BuiltDatesListActivity extends BaseActivity<BuiltDatesViewModel>{
     private static final String KEY_TYPE = "main-type";
     private static final String KEY_NAME = "name";
 
-    @BindView(R.id.activity_main_rv) RecyclerView movies_recycler_view;
+    @BindView(R.id.activity_main_rv) RecyclerView built_dates_recycler_view;
 
     @Inject
     BuiltDatesViewModel builtDatesViewModel;
@@ -79,8 +79,8 @@ public class BuiltDatesListActivity extends BaseActivity<BuiltDatesViewModel>{
     
     private void setupManufacturersRecyclerView() {
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this,2);
-        movies_recycler_view.setLayoutManager(mLayoutManager);
-        movies_recycler_view.setAdapter(builtDatesListAdapter);
+        built_dates_recycler_view.setLayoutManager(mLayoutManager);
+        built_dates_recycler_view.setAdapter(builtDatesListAdapter);
     }
 
 
