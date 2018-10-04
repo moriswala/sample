@@ -20,6 +20,6 @@ public class ManufacturerListModule {
 
     @Provides
     ManufacturerListAdapter provideManufacturerListAdapter(){
-        return new ManufacturerListAdapter(new ArrayList<>());
+        return new ManufacturerListAdapter();
     }
 }

@@ -75,25 +75,21 @@ public class ManufacturerDetailViewModel extends BaseViewModel {
     private void fetchManufacturerItemsFromServer(String code){
         // show loading
         showLoading.call();
-
-        Disposable s = getDataManager().fetchManufacturerItemListOfManufacturerCode(code, AppConstants.API_KEY,  0, 10)
+        Disposable s = getDataManager().fetchManufacturerItemListOfManufacturerCode(code,
+                AppConstants.API_KEY,  0, 10)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
                     // hide loading dialog
                     hideLoading.call();
-
                     List<ManufacturerItems> list = mapToList(code, response.getWkda());
                     // update manufacturers in db
                     insertManufacturers(list);
-
                     // notify subscribers about the new loaded data
                     manufacturerLiveData.setValue(list);
-
                 }, throwable -> {
                     // hide loading dialog
                     hideLoading.call();
-
                     // notify subscribers about the error msg
                     getErrorMsg().setValue(throwable.getMessage());
                 });

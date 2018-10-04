@@ -14,6 +14,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Observable;
+import retrofit2.Call;
 
 /**
  *
@@ -47,6 +48,11 @@ public class AppDataManager implements DataManager {
     @Override
     public Observable<ServerResponce> fetchManufacturersList(String api_key, Integer page, Integer pageSize) {
         return mApiService.fetchManufacturersList(api_key , page, pageSize);
+    }
+
+    @Override
+    public Call<ServerResponce> fetchManufacturersListCall(String api_key, Integer page, Integer pageSize) {
+        return mApiService.fetchManufacturersListCall(api_key , page, pageSize);
     }
 
     @Override

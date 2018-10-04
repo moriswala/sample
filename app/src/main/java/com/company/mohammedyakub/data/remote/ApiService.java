@@ -4,6 +4,7 @@ import com.company.mohammedyakub.data.remote.api.ServerResponce;
 import com.company.mohammedyakub.utils.AppConstants;
 
 import io.reactivex.Observable;
+import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
@@ -14,6 +15,12 @@ public interface ApiService {
               @Query(AppConstants.Api.KEY_API)String api_key,
               @Query(AppConstants.Api.PAGE)Integer page,
               @Query(AppConstants.Api.PAGE_SIZE)Integer pageSize);
+
+    @GET("v1/car-types/manufacturer")
+    Call<ServerResponce> fetchManufacturersListCall(
+            @Query(AppConstants.Api.KEY_API)String api_key,
+            @Query(AppConstants.Api.PAGE)Integer page,
+            @Query(AppConstants.Api.PAGE_SIZE)Integer pageSize);
 
     @GET("v1/car-types/main-types")
     Observable<ServerResponce> fetchManufacturerItemListOfManufacturerCode(
