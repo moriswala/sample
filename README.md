@@ -1,5 +1,7 @@
-## MVVM-Dagger2-Room-RxJava2-Retrofit
-This repository contains a detailed sample app that implements MVVM architecture using Dagger2, Room, RxJava2, DataBinding and Retrofit
+## MVVM-Dagger2-Room-RxJava2-Retrofit-Paging-Java
+This repository contains a detailed sample app that implements MVVM architecture using Dagger2, Room, RxJava2, DataBinding, Retrofit and Paging using Java.
+
+This example app will save server responces in local database and will be used to run the app incase of no internet for better user experience.
 
 ### The app has following packages:
 1. **data**: It contains all the data accessing and manipulating components.
