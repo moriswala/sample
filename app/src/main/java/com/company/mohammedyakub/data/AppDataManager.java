@@ -5,7 +5,7 @@ import com.company.mohammedyakub.data.model.BuiltDate;
 import com.company.mohammedyakub.data.model.Manufacturer;
 import com.company.mohammedyakub.data.model.ManufacturerItems;
 import com.company.mohammedyakub.data.remote.ApiService;
-import com.company.mohammedyakub.data.remote.api.ManufacturerListResponce;
+import com.company.mohammedyakub.data.remote.api.ServerResponce;
 import com.company.mohammedyakub.data.local.prefs.SharedPreferenceUtils;
 
 import java.util.List;
@@ -45,12 +45,12 @@ public class AppDataManager implements DataManager {
      * @return
      */
     @Override
-    public Observable<ManufacturerListResponce> fetchManufacturersList(String api_key, Integer page, Integer pageSize) {
+    public Observable<ServerResponce> fetchManufacturersList(String api_key, Integer page, Integer pageSize) {
         return mApiService.fetchManufacturersList(api_key , page, pageSize);
     }
 
     @Override
-    public Observable<ManufacturerListResponce> fetchManufacturerItemListOfManufacturerCode(
+    public Observable<ServerResponce> fetchManufacturerItemListOfManufacturerCode(
             String manufacturer,
             String api_key,
             Integer page,
@@ -60,7 +60,7 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Observable<ManufacturerListResponce> fetchManufacturerItemsBuiltDates(
+    public Observable<ServerResponce> fetchManufacturerItemsBuiltDates(
             String manufacturerCode, String typeCode, String apiKey) {
         return mApiService.fetchManufacturerItemsBuiltDates(manufacturerCode, typeCode, apiKey);
     }
