@@ -24,7 +24,8 @@ public class ManufacturerViewModel extends BaseViewModel {
     @Inject
     public ManufacturerViewModel(Application context, DataManager dataManager) {
         super(context, dataManager);
-        ManufacturerDataSourceFactory itemDataSourceFactory = new ManufacturerDataSourceFactory(dataManager);
+        ManufacturerDataSourceFactory itemDataSourceFactory
+                = new ManufacturerDataSourceFactory(context, dataManager, getCompositeDisposable());
         liveDataSource = itemDataSourceFactory.getItemLiveDataSource();
         PagedList.Config pagedListConfig =
                 (new PagedList.Config.Builder())
