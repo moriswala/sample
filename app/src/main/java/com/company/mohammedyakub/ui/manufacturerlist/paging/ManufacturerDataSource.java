@@ -21,7 +21,7 @@ import retrofit2.Response;
 
 public class ManufacturerDataSource extends PageKeyedDataSource<Integer, Manufacturer> {
 
-    public static final int PAGE_SIZE = 10;
+    public static final int PAGE_SIZE = 15;
     private static final int FIRST_PAGE = 0;
     private final DataManager dataManager;
 
