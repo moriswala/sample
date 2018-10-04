@@ -44,6 +44,7 @@ public class ManufacturerListActivity extends BaseActivity<ManufacturerViewModel
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setupWindowAnimations();
+        setTitle(getString(R.string.manufacturer_list));
         // initialize manufacturers recycler view
         setupManufacturersRecyclerView();
 

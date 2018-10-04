@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.transition.Fade;
@@ -89,7 +90,7 @@ public class BuiltDatesListActivity extends BaseActivity<BuiltDatesViewModel>{
     }
 
     private void setupManufacturersRecyclerView() {
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this,2);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         built_dates_recycler_view.setLayoutManager(mLayoutManager);
         built_dates_recycler_view.setAdapter(builtDatesListAdapter);
     }

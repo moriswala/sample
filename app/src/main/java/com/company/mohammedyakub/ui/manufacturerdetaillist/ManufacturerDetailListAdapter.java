@@ -39,6 +39,7 @@ public class ManufacturerDetailListAdapter extends RecyclerView.Adapter<Manufact
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, final int position) {
         viewHolder.binding.setManufacturerItem(manufacturerItems.get(position));
+        viewHolder.binding.setPosition(position);
         viewHolder.binding.getRoot().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -35,6 +35,7 @@ public class BuiltDatesListAdapter extends RecyclerView.Adapter<BuiltDatesListAd
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, final int position) {
         viewHolder.binding.setBuiltDate(builtDates.get(position));
+        viewHolder.binding.setPosition(position);
         viewHolder.binding.getRoot().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

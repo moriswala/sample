@@ -4,7 +4,9 @@
         <variable
             name="manufacturerItem"
             type="com.company.mohammedyakub.data.model.ManufacturerItems" />
-
+        <variable
+            name="position"
+            type="java.lang.Integer" />
     </data>
 
 <android.support.v7.widget.CardView android:layout_margin="1dp"
@@ -12,6 +14,7 @@
     app:cardElevation="1dp"
     android:layout_width="match_parent"
     android:layout_height="100dp"
+    android:background="@{position%2==0? @color/even_color:@color/odd_color}"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
