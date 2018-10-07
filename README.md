@@ -9,9 +9,7 @@ This example app will save server responces in local database and will be used t
 3. **ui**: View classes along with their corresponding ViewModel.
 4. **utils**: Utility classes.
 
-### Classes have been designed in such a way that it could be inherited and maximize the code reuse.
-
-Android Developer : MohammedYakub – [@linkedin](https://www.linkedin.com/in/mohammedyakub-moriswala-61561820/) – yakubmoriss@gmail.com
+### Android Developer : MohammedYakub – [@linkedin](https://www.linkedin.com/in/mohammedyakub-moriswala-61561820/)
 
 ### Reference:
 1. https://developer.android.com/topic/libraries/architecture/
