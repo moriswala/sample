@@ -14,4 +14,6 @@ This example app will save server responces in local database and will be used t
 Android Developer : MohammedYakub – [@linkedin](https://www.linkedin.com/in/mohammedyakub-moriswala-61561820/) – yakubmoriss@gmail.com
 
 ### Reference:
+https://developer.android.com/topic/libraries/architecture/
+https://github.com/googlesamples/android-architecture-components
 https://github.com/MindorksOpenSource/android-mvvm-architecture
